@@ -1,4 +1,6 @@
-from ..import mongo
+from ..import db
+from.. import SQLAlchemy
+from flask_bcrypt import Bcrypt
 
 class dealers:
 
@@ -9,18 +11,30 @@ class dealers:
             return False  # User already exists
         else:
             # Insert the new user into the database
-            mongo.db.signup.insert_one(signupdetails)
+            db.signup.insert_one(signupdetails)
             return True  # User created successfully
 
   
     def find_user_by_username_or_email(username, email):
-        return mongo.db.signup.find_one({'$or': [{'username': username}, {'email': email}]})
+        return db.signup.find_one({'$or': [{'username': username}, {'email': email}]})
 
   
     def find_user_by_username_and_password(username, password):
-        return mongo.db.signup.find_one({'username': username, 'password': password})
+        return db.signup.find_one({'username': username, 'password': password})
 
  
     def get_user_by_email(email):
-        return mongo.db.signup.find_one({'email': email})
+        return db.signup.find_one({'email': email})
+    
+    def authenticate(username, password):
+        user = dealers.query.filter_by(username=username).first()
+        if user and dealers.check_password_hash(user.password, password):
+            return user
+        return None
+    
+
+
+    
+    
+    
     

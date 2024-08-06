@@ -2,6 +2,7 @@ from flask import Flask
 from flask_pymongo import PyMongo
 from.config import Config
 
+
 mongo = PyMongo()
 
 def create_app():
@@ -9,9 +10,10 @@ def create_app():
     app.config.from_object(Config)
     
     mongo.init_app(app)
-
     with app.app_context():
-       
-       return app
+       from .routes import user_routes
+       app.register_blueprint(user_routes.app)
 
         
+    return app
+

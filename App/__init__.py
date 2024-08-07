@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 from .config import Config
+from flask_jwt_extended import JWTManager
 
 mongo = PyMongo()
 
